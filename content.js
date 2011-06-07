@@ -21,20 +21,32 @@ function currency(value, decimals, separators) {
     return (parts.length == 3 ? '-' : '') + result;
 }
 
+function sanitizePrice(price){
+	price = price.replace("$","");
+	price = price.replace(",","");	
+	return price;
+}
 
-function addLocalCurrency(item,exRate) {
+function addLocalCurrency(item,exRate,styleName) {
+    style  = "pricexch";
+    nodeName = "span";
     
+    if(styleName) {
+        style = styleName;
+    }
+
     if(item != null) {
       
-      val = item.innerText;
-     // alert(val);
-      val = val.replace("$","");
+      val = sanitizePrice(item.innerText);
+          
       cops = val * exRate;    
       result = cops.toFixed(3);
       result = currency(result);
  
         if(item.nodeName != "TD" && val  > 0) {
-            item.insertAdjacentHTML('afterEnd', ' <b class ="pricexch">($'+ result + ')</b>');
+            nodeName = item.NodeName;
+            
+            item.insertAdjacentHTML('afterEnd', ' <'+ nodeName + ' class ="' +style +'">($'+ result + ')</'+nodeName+'>');
         }
 
        
@@ -45,6 +57,23 @@ function addLocalCurrency(item,exRate) {
 
 function showLocalCurrency(exchangeRate) {
     //alert('showLocalCurrency');
+	
+  
+    see_price_in_cart =  document.getElementsByClassName("buyAction olpBlueLink")[0];
+    // only interested in the first one
+    // TODO: Price on card
+    if (see_price_in_cart) {
+        //alert("Woot");
+        see_price_in_cart.addEventListener("click", function() {   
+            
+            element = document.getElementsByClassName("pricelarge")[0]; 
+       //     alert(element);
+            addLocalCurrency(element,exchangeRate,"priceLarge");
+                                                                   
+           },   false)
+
+    }
+
 
   if(exchangeRate) {  
     var priceLarge  = document.getElementsByClassName("pricelarge");
@@ -57,27 +86,8 @@ function showLocalCurrency(exchangeRate) {
 	  addLocalCurrency(itemx,exchangeRate);
       }  
  
-          
-          /* if(price != null) { 
-    
-      var item = price.item();   
-      value = item.innerText;        
-      value = value.replace("$","");
-      cops = value * exchangeRate;    
-      result = cops.toFixed(3);
-      result = currency(result);      
-      item.insertAdjacentHTML('afterEnd', ' <b class ="price">(COP $ '+ result + ')</b>');
-    
-    } */
-    
-    if(priceLarge != null) {
-      var itemLarge = priceLarge.item();   
-      valueLarge = itemLarge.innerText;
-      valueLarge = valueLarge.replace("$","");
-      copsLarge = valueLarge * exchangeRate;
-      resultLarge = copsLarge.toFixed(3);
-      resultLarge = currency(resultLarge);
-      itemLarge.insertAdjacentHTML('afterEnd', ' <b class="price">(COP $ '+ resultLarge + ')</b>');
+    if(priceLarge) {
+        addLocalCurrency(priceLarge.item(),exchangeRate,"priceLarge");
     }
     
   }
