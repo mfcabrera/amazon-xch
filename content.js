@@ -56,23 +56,82 @@ function addLocalCurrency(item,exRate,styleName) {
 
 
 function showLocalCurrency(exchangeRate) {
-    //alert('showLocalCurrency');
-	
-  
+ 
+    var item = null;
+    var len = null;
     see_price_in_cart =  document.getElementsByClassName("buyAction olpBlueLink")[0];
+    
     // only interested in the first one
-    // TODO: Price on card
+    // TODO: Price on cart. It only works if you hit twice in the button.
     if (see_price_in_cart) {
-        //alert("Woot");
+
         see_price_in_cart.addEventListener("click", function() {   
             
             element = document.getElementsByClassName("pricelarge")[0]; 
-       //     alert(element);
+
             addLocalCurrency(element,exchangeRate,"priceLarge");
                                                                    
            },   false)
 
     }
+
+    // Multiple product options swatchOuter
+
+   
+  /*  item = null;
+       
+    elements = document.getElementsByClassName("product");
+    for(var j = 0; j < elements.length; j++) {
+       alert(elements[j]);
+       elements[j].addEventListener("DOMSubtreeModified", function() {   
+           
+           element = document.getElementsByClassName("pricelarge")[0]; 
+           addLocalCurrency(element,exchangeRate,"priceLarge");
+                                                                   
+        },   false);
+    }*/
+
+                        
+  
+     
+    
+  /*  for(var i=0; i<len; i++) {
+        swatchOuter[i].addEventListener("click", function() {   
+            
+
+            elements = document.getElementsByClassName("priceLarge");
+            for(var j = 0; j < elements.length; j++) {
+              //  alert(elements[j]);
+                addLocalCurrency(elements[j],exchangeRate,"priceLarge");
+            }
+
+                        
+        },   false);
+        
+        swatchOuter[i].addEventListener("mouseout", function() {   
+            
+
+            elements = document.getElementsByClassName("priceLarge");
+            for(var j = 0; j < elements.length; j++) {
+              //  alert(elements[j]);
+                addLocalCurrency(elements[j],exchangeRate,"priceLarge");
+            }
+
+                        
+        },   false);
+                                                                        
+
+    /*     swatchOuter[i].addEventListener("mouseout", function() {   
+            
+            element = document.getElementsByClassName("pricelarge")[0]; 
+
+            addLocalCurrency(element,exchangeRate,"priceLarge");
+                                                                   
+        },   false);*/
+	    
+     
+ //   }
+    
 
 
   if(exchangeRate) {  
@@ -82,7 +141,7 @@ function showLocalCurrency(exchangeRate) {
 
      
       item = null;
-      var len=price.length;
+      len=price.length;
       for(var i=0; i<len; i++) {
 	  itemx  = price[i];
 	  addLocalCurrency(itemx,exchangeRate);
