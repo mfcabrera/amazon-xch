@@ -76,15 +76,23 @@ function showLocalCurrency(exchangeRate) {
 
 
   if(exchangeRate) {  
-    var priceLarge  = document.getElementsByClassName("pricelarge");
-    var price = document.getElementsByClassName("price");
+      var priceLarge  = document.getElementsByClassName("pricelarge");
+      var price = document.getElementsByClassName("price");
+      var priceRed = document.getElementsByClassName("red t14");
+
      
       item = null;
       var len=price.length;
       for(var i=0; i<len; i++) {
 	  itemx  = price[i];
 	  addLocalCurrency(itemx,exchangeRate);
-      }  
+      }
+
+      len = priceRed.length;
+      for(var i=0; i<len; i++) {
+	  itemx  = priceRed[i];
+	  addLocalCurrency(itemx,exchangeRate);
+      }
  
     if(priceLarge) {
         addLocalCurrency(priceLarge.item(),exchangeRate,"priceLarge");
