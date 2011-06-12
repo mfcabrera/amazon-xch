@@ -2,25 +2,29 @@
     <head>
         <title>Amazon Local Currency</title>
         
-        <link type="text/css" rel="stylesheet" href="amazonxch.css" />        
-        <script type="text/javascript" src="scripts/background.js"></script>
-        <script type="text/javascript">
+    <link type="text/css" rel="stylesheet" href="amazonxch.css" />        
+    <script type="text/javascript">
       
      /*      
         fetch the currency from the server if it is not in the local storage
       */
-       function fetchCurrency(callback) {
+function fetchCurrency(callback,currency) {
        
+    if(currency == null) {
+        currency = "COP";
+    }
+        
         var invocation = new XMLHttpRequest();
-        var url = 'http://download.finance.yahoo.com/d/quotes.csv?e=.csv&f=l1&s=USDCOP=X';
+        var url = 'http://download.finance.yahoo.com/d/quotes.csv?e=.csv&f=l1&s=USD'+currency+'=X';
         
         
         invocation.onreadystatechange = function(data) {
         if (invocation.readyState == 4) {
              if (invocation.status == 200 ) {
               var data = invocation.responseText;
-              localStorage.setItem(createDateString(),data);
-               callback(data);                
+                 localStorage.setItem("lastDate",createDateString());
+                 localStorage.setItem("value",data);
+                 callback(data);                
             } else {               
               callback(null);
             }
@@ -28,46 +32,39 @@
         }       
       invocation.open('GET', url, true);
       invocation.send();
-     /*  invocation.onload = function() {  
-       alert('en la función onLoad');
-       callback(invocation.responseText) ; 
-       
-       };*/
-
-    
-        // Note that any URL fetched here must be matched by a permission in
-        // the manifest.json file!
-       
-     
-        //alert('after send');
-      };
+     };
       
-      function createDateString(){
+function createDateString(){
           var d = new Date();
           return d.getFullYear() + "" + d.getMonth() + "" + d.getDate() ;      
       };
-      function getRate(callback) {
-              var ld = createDateString();
-              var lrate =   localStorage.getItem(ld);
-              if(lrate) {
-          //    alert('using local storage');
-              callback(lrate);
-              }else {
-                fetchCurrency(callback);
-              }
-               
-       };
+ 
+function getRate(callback) {
+   
+    var ld = createDateString();
+    actual = localStorage.getItem("lastDate");
+        
+    if(actual == ld) {
+        lrate = localStorage.getItem("value");
+        callback(lrate);
+    } else {
+        fetchCurrency(callback);
+    }
+    
+   
+};
      
       
-       function onRequest(request, sender, callback) {
-   
-        if (request.action == 'getRate') {
-          getRate(callback);
-        }
-      };
+function onRequest(request, sender, callback) {
+          
+    if (request.action == 'getRate') {
+        getRate(callback);
+    }
+};
 
           // Wire up the listener.
-      chrome.extension.onRequest.addListener(onRequest);
+
+chrome.extension.onRequest.addListener(onRequest);
 
              
              
