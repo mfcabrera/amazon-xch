@@ -33,7 +33,7 @@ function init()
     var container = document.getElementById('currency_table');
     container.appendChild(tr); 
     //alert(currency);
-    setSelectedIndex(select_currency.id,currency);
+    setSelectedIndex(select_currency.id,selected_currency);
    
 }
 
@@ -58,5 +58,5 @@ function onCurrencyChange(event)
 {
     var option = event.target.options[event.target.selectedIndex];
     localStorage.setItem(event.target.id, option.value);
-    update(event.target.name);
+    
 }
