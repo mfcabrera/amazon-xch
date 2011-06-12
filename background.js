@@ -1,17 +1,31 @@
 
-function getRate(from, to, sendResponse)
-{
 
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open("GET", "http://finance.yahoo.com/d/quotes.csv?e=.csv&f=l1&s=" + from + to + "=X", true);
-    xmlhttp.onload = 
-    //function()   { sendResponse({currency_rate: xmlhttp.responseText}); }
-    xmlhttp.send();
-  
+/*      
+        fetch the currency from the server if it is not in the local storage
+*/
 
-    //return google_finance_result;
-
-}
-
-
-
+function fetchCurrency(callback) {
+    
+    var invocation = new XMLHttpRequest();
+    var url = 'http://download.finance.yahoo.com/d/quotes.csv?e=.csv&f=l1&s=USDCOP=X';
+    
+    
+    invocation.onreadystatechange = function(data) {
+        if (invocation.readyState == 4) {
+            if (invocation.status == 200 ) {
+                var data = invocation.responseText;
+              localStorage.setItem(createDateString(),data);
+                callback(data);                
+            } else {               
+                callback(null);
+            }
+        }
+    }       
+    invocation.open('GET', url, true);
+    invocation.send();
+};
+      
+function createDateString(){
+    var d = new Date();
+    return d.getFullYear() + "" + d.getMonth() + "" + d.getDate() ;      
+};
