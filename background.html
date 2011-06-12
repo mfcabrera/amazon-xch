@@ -24,6 +24,7 @@ function fetchCurrency(callback,currency) {
               var data = invocation.responseText;
                  localStorage.setItem("lastDate",createDateString());
                  localStorage.setItem("value",data);
+                 localStorage.setItem("lastCur",currency);
                  callback(data);                
             } else {               
               callback(null);
@@ -42,13 +43,15 @@ function createDateString(){
 function getRate(callback) {
    
     var ld = createDateString();
-    actual = localStorage.getItem("lastDate");
-        
-    if(actual == ld) {
+    var actual = localStorage.getItem("lastDate");
+    var currency = localStorage.getItem("currency");
+    var lastCur = localStorage.getItem("lastCur");
+     
+    if(actual == ld && currency == lastCur) {
         lrate = localStorage.getItem("value");
         callback(lrate);
     } else {
-        fetchCurrency(callback);
+        fetchCurrency(callback,currency);
     }
     
    
