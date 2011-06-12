@@ -46,7 +46,11 @@ function getRate(callback) {
     var actual = localStorage.getItem("lastDate");
     var currency = localStorage.getItem("currency");
     var lastCur = localStorage.getItem("lastCur");
-     
+    
+    if(!currency) {
+        currency = "COP";
+    }
+    
     if(actual == ld && currency == lastCur) {
         lrate = localStorage.getItem("value");
         callback(lrate);
