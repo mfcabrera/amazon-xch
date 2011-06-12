@@ -2,11 +2,14 @@
   "name": "AmazonXCH",
   "version": "0.1",
   "description": "An extension to show automatically Amazon prices in local currency",
-  
+  "browser_action": {
+    "default_icon": "icon.png",
+    "popup": "popup.html"
+  },
    "content_scripts": [
     {
       "matches": ["http://*.amazon.com/*"],
-      "js": ["jquery.js", "content.js"],
+      "js": ["jquery.js", "content.js","background.js"],
       "css": ["amazonxch.css"]
     }
   ],
